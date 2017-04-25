@@ -5,9 +5,9 @@ Cyber Security Base - Capture The Flag
 
 A flag was hidden somewhere into an image of a cat that we needed to find. I first used strings to look up the contents of the image. No further magic was needed:
 
-      strings cat.jpeg
+    strings cat.jpeg
       
-      {HiddenCatFlag01}
+    {HiddenCatFlag01}
 
 #### Crack the password
 
@@ -16,6 +16,24 @@ In this challenge we were required to find the password from the password_checke
     Enter the password :
     CorrectPasswrdAA
     You entered correct password
+    
+#### Admin panel 
+
+The challenge contains a small web application and requires us to access a secret admin panel. The description states that "The panel supposedly leaked previously when a popular search engine accidentally indexed it. However, security has been tightened since then", which seems that a indexing bot has visited the robots.txt page.
+
+Visiting the https://cyber-bank.testmycode.io/robots.txt gives us:
+
+    # See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+    #
+    # To ban all spiders from the entire site uncomment the next two lines:
+    # User-agent: *
+    # Disallow: /
+    Disallow: /super_secret_admin_panel_fds
+
+
+Thus, visiting the /super_secret_admin_panel_fds gives us the database password, which was the flag for this challenge:
+
+    Database password: "cannothackmelol".
 
 #### Save the Day 
 
