@@ -113,6 +113,18 @@ Trying again with steghide and providing the "passphrase" as a password we get t
     wrote extracted data to "cat02chidden.txt".
     root@kali:~/Desktop# cat cat02chidden.txt 
     HiddenCatFlagDE23
+    
+#### Killing hashes (Medium)
+
+The challenge gives us the following hash that needs to be cracked
+
+    ef16ab3c539a766ecbe30eb008032e16
+
+At first glance, it seems to be MD5 as it is 32 character alphanumeric string, which means it should be quite easy to crack. We could use password cracking software such as John the Ripper. However, it is much quicker to use readily available tools online, such as https://hashkiller.co.uk/md5-decrypter.aspx
+
+The decrypted password and flag was
+
+    Bundaita
 
 #### Forgot the password? (Medium)
 
