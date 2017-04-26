@@ -17,6 +17,20 @@ In this challenge we were required to find the password from the password_checke
     CorrectPasswrdAA
     You entered correct password
     
+#### Hidden in script (Easy)
+
+The challenge was to find a secret backend key, which was leaking through a hidden debugging mode in JavaScript at https://cyber-bank.testmycode.io/.
+
+When visiting the application, it loads a JavaScript -file https://cyber-bank.testmycode.io/assets/application-9bc2bee65ff0948f32fe86b8e5fd85ea194a1e8d46183aa99f7b17681245b793.js
+
+Searching through the JavaScript with a string "debug" I found this: 
+
+    "cyberdebugmode","true","GET","/nothing_to_see_here.json"
+    
+Visiting the URL we can find the backend key:
+
+    backend-key	"BM1GOMYajD4ONBHxEOq4"
+    
 #### Admin panel (Easy)
 
 The challenge contains a small web application and requires us to access a secret admin panel. The description states that "The panel supposedly leaked previously when a popular search engine accidentally indexed it. However, security has been tightened since then", which seems that a indexing bot has visited the robots.txt page.
