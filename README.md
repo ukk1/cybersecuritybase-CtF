@@ -34,6 +34,30 @@ Visiting the https://cyber-bank.testmycode.io/robots.txt gives us:
 Thus, visiting the /super_secret_admin_panel_fds gives us the database password, which was the flag for this challenge:
 
     Database password: "cannothackmelol".
+    
+#### Awkward Ending Syndrome (Easy)
+
+Looking at the challenge name and description it contains clues about what sort of encryption algorithm is being used, AES and mode of CBC (Canadian Born person named Chad).
+
+In the challenge we have the ciphertext and key that was being used to encrypt the message. Now we also know the scheme, which means we can decrypt the message.
+
+CBC mode uses an IV (initialization vector), which is used to randomize each ciphertext. If the IV would be static or missing completely it would mean that the same string would produce a same ciphertext. When an IV is introduced, it provides randomness into the ciphertext, which means that when two similar plaintext strings are encrypted with different IV the ciphertext is also different.
+
+All in all, with some python script we can decrypt the message:
+
+    from Crypto.Cipher import AES
+    import binascii
+
+    key = binascii.unhexlify('000102030405060708090A0B0C0D0E0F')
+    iv = binascii.unhexlify('00000000000000000000000000000000')
+    ciphertext = binascii.unhexlify('3B953347892900C95858A5C16FD8DFB0920DF37294CBC3313AAB85608D32328D')
+
+    obj = AES.new(key, AES.MODE_CBC, iv)
+    plaintext = obj.decrypt(ciphertext)
+
+    print plaintext
+    
+The flag for this challenge was: ThisIsTheFlagDEAD
 
 #### Save the Day (Easy)
 
