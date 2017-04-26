@@ -125,6 +125,29 @@ At first glance, it seems to be MD5 as it is 32 character alphanumeric string, w
 The decrypted password and flag was
 
     Bundaita
+    
+#### queenrulez (Medium)
+
+We are provided a cleartext password and its hash value "queenrulez2000" - "bf078b4812ac9e58b486b8f75ba968ba4f18b502". However, the challenge requires us to find out the users new password, which hash value is "3ede8b7d2e4c4fc26529ba543a6c4414793dc502". The challenge also says that only the last four digits has been changed.
+
+The password is hashed with SHA-1 algorithm. I wrote a quick bash script that will generate the password hashes from queenrulez1000 to queenrulez9999.
+
+    #!/bin/bash
+
+    START=0000
+    END=9999
+
+    for I in $(seq $START $END)
+    do
+	    echo "queenrulez$I"
+	    echo -n "queenrulez$I" |shasum
+    done
+
+When the hashes are created we can search through the list of hashes for a match "3ede8b7d2e4c4fc26529ba543a6c4414793dc502".
+
+The solution was:
+
+    queenrulez5215 - 3ede8b7d2e4c4fc26529ba543a6c4414793dc502
 
 #### Forgot the password? (Medium)
 
