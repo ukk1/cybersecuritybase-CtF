@@ -75,3 +75,22 @@ Trying again with steghide and providing the "passphrase" as a password we get t
     wrote extracted data to "cat02chidden.txt".
     root@kali:~/Desktop# cat cat02chidden.txt 
     HiddenCatFlagDE23
+
+#### Forgot the password? (Medium)
+
+This challenge also required us to discover the correct password for the application. First I used the strings to search the contents of the binary.
+
+    strings password_checker_2
+    
+    Enter the password :
+    Q29ycmVjdFBhc3N3cmRBQUFC
+    You entered correct password
+    You entered incorrect password
+
+The string "Q29ycmVjdFBhc3N3cmRBQUFC" seems to be the password. However, supplying it as is the password_checker_2 returns an incorrect password message. Looking at the string more closely it uses only alphanumeric characters and is divisible by 4, which suggests that it is base64 encoded. 
+
+By decoding the string in base64 we get the flag:
+
+    echo -n "Q29ycmVjdFBhc3N3cmRBQUFC" |base64 -d
+    
+    CorrectPasswrdAAAB
