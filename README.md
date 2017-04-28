@@ -114,6 +114,50 @@ Trying again with steghide and providing the "passphrase" as a password we get t
     root@kali:~/Desktop# cat cat02chidden.txt 
     HiddenCatFlagDE23
     
+#### Fuzzy calculator (Medium)
+
+In this challenge we were provided a 64-bit Linux binary, which seems to have some sort of memory corruption issue. Also the name of the challenge seems to suggest that some sort of fuzzing is required to find the correct memory address where the overwrite happens.
+
+I started fuzzing the application with overly long strings, such as "AAAAAAAA" using the following:
+
+	printf "%0.sA" {1..100000} | ./clock
+	
+This quickly resulted into Segmentation fault.
+
+	Welcome to the cyber calculator!
+	Please type a calculation to proceed. (For example 1+1)
+	Segmentation fault
+	
+So it was time to fire the calculator app with GNU debugger (gdb) to see in what memory address does it happen. I used input redirection in gdb to take input from a file where the overly long string of As were saved:
+
+	printf "%0.sA" {1..100000} > fuzzz.txt
+	root@kali:~/Desktop# gdb ./clock 
+	GNU gdb (Debian 7.12-6) 7.12.0.20161007-git
+	Copyright (C) 2016 Free Software Foundation, Inc.
+	License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+	This is free software: you are free to change and redistribute it.
+	There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+	and "show warranty" for details.
+	This GDB was configured as "x86_64-linux-gnu".
+	Type "show configuration" for configuration details.
+	For bug reporting instructions, please see:
+	<http://www.gnu.org/software/gdb/bugs/>.
+	Find the GDB manual and other documentation resources online at:
+	<http://www.gnu.org/software/gdb/documentation/>.
+	For help, type "help".
+	Type "apropos word" to search for commands related to "word"...
+	Reading symbols from ./clock...(no debugging symbols found)...done.
+	(gdb) run < fuzzz.txt 
+	Starting program: /root/Desktop/clock < fuzzz.txt
+	Welcome to the cyber calculator!
+	Please type a calculation to proceed. (For example 1+1)
+
+	Program received signal SIGSEGV, Segmentation fault.
+	0x0000000000403670 in memcpy ()
+	(gdb) 
+
+The 0x0000000000403670 memory address was the solution for this challenge.
+    
 #### Killing hashes (Medium)
 
 The challenge gives us the following hash that needs to be cracked
