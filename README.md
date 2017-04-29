@@ -17,6 +17,35 @@ In this challenge we were required to find the password from the password_checke
     CorrectPasswrdAA
     You entered correct password
     
+#### A simple hashing scheme (Easy)
+
+This challenge involved some basic math to be calculated. We were required to find out the modulus for string "flagc".
+
+I created a quick python script to do the calculation as follows:
+
+	#!/usr/bin/python
+
+	s = "flagc".encode("hex")
+	i = int(s, 16)
+	modulus = i % 16
+
+	print modulus
+
+The final answer was 3.
+
+#### Super advanced encryption (Easy)
+
+The cipjertext in this challenge was a ROT-13 cipher where characters are subsituted. There is a readily available library in python that can be used to calculate ROT-13 "encryption".
+
+	#!/usr/bin/python
+
+	import codecs
+	decrypt = codecs.decode('PloreFrphevglOnfrSyntN', 'rot_13')
+
+	print decrypt
+
+Flag for the challenge was "CyberSecurityBaseFlagA"
+
 #### Hidden in script (Easy)
 
 The challenge was to find a secret backend key, which was leaking through a hidden debugging mode in JavaScript at https://cyber-bank.testmycode.io/.
