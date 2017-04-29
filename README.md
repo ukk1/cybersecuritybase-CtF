@@ -232,3 +232,47 @@ By decoding the string in base64 we get the flag:
     echo -n "Q29ycmVjdFBhc3N3cmRBQUFC" |base64 -d
     
     CorrectPasswrdAAAB
+
+#### Cracking the lost password (Hard)
+
+For the third password program we are once again challenged to find the correct password. Looking at the binary we discover few interesting things.
+
+	root@kali:~/Desktop# file password_3 
+	password_3: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, stripped
+
+The password_3 program is stripped, which means symbol tables etc. are removed. So if we would try to search for functions in gdb it would fail since the symbol table would not load.
+
+Next I used strings to look into the contents of the program, which revealed other interesting things, such as that the program was packed with UPX making it pretty much unreadable.
+
+	root@kali:~/Desktop# strings password_3 
+	UPX!
+	'@6!O
+	/lib64
+	nux-x86-
+
+However, we can use upx also to unpack the program.
+
+	root@kali:~/Desktop# upx -d password_3 
+			       Ultimate Packer for eXecutables
+				  Copyright (C) 1996 - 2013
+	UPX 3.91        Markus Oberhumer, Laszlo Molnar & John Reiser   Sep 30th 2013
+
+		File size         Ratio      Format      Name
+	   --------------------   ------   -----------   -----------
+	     20780 <-      6401   30.80%  linux/ElfAMD   password_3
+
+	Unpacked 1 file.
+
+Then running strings again we can find the password.
+
+	root@kali:~/Desktop# strings password_3 
+	/lib64/ld-linux-x86-64.so.2
+	libc.so.6
+	...
+	[]A\A]A^A_
+	Enter the password :
+	CorrectPasswrdAAA
+	You entered correct password
+	You entered incorrect password
+
+The correct password is "CorrectPasswrdAAA".
