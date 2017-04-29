@@ -149,17 +149,20 @@ In this challenge we were provided a 64-bit Linux binary, which seems to have so
 
 I started fuzzing the application with overly long strings, such as "AAAAAAAA" using the following:
 
-	printf "%0.sA" {1..100000} | ./clock
+	python -c 'print "A" * 100000' | ./clock 
 	
 This quickly resulted into Segmentation fault.
 
 	Welcome to the cyber calculator!
 	Please type a calculation to proceed. (For example 1+1)
+	close failed in file object destructor:
+	sys.excepthook is missing
+	lost sys.stderr
 	Segmentation fault
 	
 So it was time to fire the calculator app with GNU debugger (gdb) to see in what memory address does it happen. I used input redirection in gdb to take input from a file where the overly long string of As were saved:
 
-	printf "%0.sA" {1..100000} > fuzzz.txt
+	python -c 'print "A" * 100000' > fuzzz.txt
 	root@kali:~/Desktop# gdb ./clock 
 	GNU gdb (Debian 7.12-6) 7.12.0.20161007-git
 	...
