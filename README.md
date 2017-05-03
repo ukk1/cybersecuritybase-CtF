@@ -1,6 +1,8 @@
 # cybersecuritybase-CtF
 Cyber Security Base - Capture The Flag
 
+This repository includes some (not all) writeups of the University of Helsinki and F-Secure Cyber Security Base Capture the Flag competition challenges. All the challenges can be found here https://capture-the-flag.testmycode.io/#/ 
+
 #### Cats (Easy)
 
 A flag was hidden somewhere into an image of a cat that we needed to find. I first used strings to look up the contents of the image. No further magic was needed:
