@@ -246,6 +246,18 @@ By decoding the string in base64 we get the flag:
     echo -n "Q29ycmVjdFBhc3N3cmRBQUFC" |base64 -d
     
     CorrectPasswrdAAAB
+    
+#### Too curious cats (Hard)
+
+I spent some time on this one and was unable to solve it before the end of the CtF. I also blame myself for not paying enough attention since I had the solution by using zsteg but in some wonderous way I did not see it.
+
+Anyway, this was the third steganography challenge and I used tools such as StegSolve to play around with the bits to find the hidden data. However, I had no luck with this approach so I started searching another tools. I stumbled upon a tool called "zsteg", which allowed us to retrieve basically everything from the image.
+
+    zsteg -a cat03.bmp
+    
+And we get our flag somewhere in all the mess of the outputted data:
+    
+    lsbsecretrandom4027387520957partflag
 
 #### Cracking the lost password (Hard)
 
